@@ -7,17 +7,10 @@ namespace Week6_GradeTracker
     {
         public static void Main()
         {
-            Grade[] gradeBook = new Grade[5];
-            int Count = 0;
-            
-
-            GradeHelpers.DisplayMenu();
-            GradeHelpers.GetUserChoice();
-            GradeHelpers.ChoiceHandler(gradeBook,  Count);
-            GradeHelpers.GetGradesFromUser();
-            GradeHelpers.CalculateAverage(gradeBook, Count);
-           
-            GradeHelpers.PrintReport();
+            Grade[]? gradeBook = null;
+            int Count =0;
+            GradeHelpers.ChoiceHandler(gradeBook, Count);
+            Grade.CalculateAverage(gradeBook, Count);
         }
     }
 }

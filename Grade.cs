@@ -32,6 +32,22 @@ namespace Week6_GradeTracker
                     return letterGrade;
             }
         }
+        public static void CalculateAverage(Grade[] gradebook, int Count)
+        {
+            int gradeSum = 0;
+            int gradeAverage = 0;
+            string letterGrade = "";
+            for (int i = 0; i < 6; i++)
+            {
+                if (gradebook[i] != null)
+                {
+                    gradeSum += gradebook[i].PercentageGrade;
+                    gradeAverage = (gradeSum / Count);
+                    letterGrade = (GetLetterGrade(gradeAverage));
+                    Console.WriteLine($"The average grade is: {gradeAverage} , {letterGrade}.");
+                }
+            }
+        }
         public override string ToString()
         {
             return $"{Name}: {PercentageGrade}% ({GetLetterGrade(PercentageGrade)})";

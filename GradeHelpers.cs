@@ -12,16 +12,6 @@ namespace Week6_GradeTracker
 {
     public static class GradeHelpers
     {
-        
-
-
-        //public static void Run()
-        //{
-        //    DisplayMenu();
-        //    GetUserChoice();
-        //    ChoiceHandler();
-        //}
-
         public static void DisplayMenu()
         {
             Console.WriteLine("\n======= Sabra's Gradebook =======");
@@ -53,6 +43,7 @@ namespace Week6_GradeTracker
             do
             {
                 DisplayMenu();
+                GetUserChoice();
                 choice = GetUserChoice();
 
                 switch (choice)
@@ -62,8 +53,7 @@ namespace Week6_GradeTracker
                         {
                             for (int i = 0; i < 6; i++)
                             {
-                                Console.WriteLine($"Enter grade {i + 1}:");
-                                gradebook[i] = GetGradesFromUser();
+                                gradebook[5] = GetGradesFromUser();
                             }
                         }
                         PrintReport(gradebook);
@@ -76,67 +66,103 @@ namespace Week6_GradeTracker
                 }
             }
             while (choice != 2);  // Exit the loop when the user chooses option 2  
-        }  
-
-
-        public static Grade GetGradesFromUser()
-        {
-            Console.WriteLine($"Please enter the information for Student and Grade below");
-            Console.Write("Name of Student: ");
-            string? name = Console.ReadLine();
-            while (string.IsNullOrWhiteSpace(name))
-            {
-                Console.Write("Name cannot be empty. Enter name: ");
-                name = Console.ReadLine();
-            }
-
-            int percentageGrade;
-            Console.WriteLine("Enter grade as a whole number percentage: ");
-            while (!int.TryParse(Console.ReadLine(), out percentageGrade))
-            {
-                Console.WriteLine("Invalid. Enter Percentage Grade: ");
-                percentageGrade = int.Parse(Console.ReadLine());
-            }
-            while (percentageGrade < 0 || percentageGrade > 100)
-            {
-                Console.WriteLine("Percentage Grade must be whole number between 0 and 100.");
-                Console.WriteLine("Enter Percentage Grade: ");
-                percentageGrade = int.Parse(Console.ReadLine());
-            }
-            
-            return new Grade(name!, percentageGrade);
-        }
-        public static void DisplayAllStudents(Grade[] gradeBook)
-        {
-            Console.WriteLine("\n-- All Enrolled Students --");
-            for (int i = 0; i < gradeBook.Length; i++)
-            {
-                Console.WriteLine($"Name: {gradeBook[i].Name}, Percentage Grade: {gradeBook[i].PercentageGrade}");
-            }
         }
 
-              
-        public static void CalculateAverage(Grade[] gradebook, int Count)
+        public static void PrintReport(Grade[] gradebook)
         {
-            int gradeSum = 0;
-            int gradeAverage = 0;
-            
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 5; i++)
             {
                 if (gradebook[i] != null)
                 {
-                    gradeSum += gradebook[i].PercentageGrade;
-                    gradeAverage = (gradeSum / Count);
-                    Console.WriteLine($"The average grade is: {gradeAverage}");
+                    Console.WriteLine(gradebook[i].ToString());
                 }
             }
         }
-
-       
-        
-        public static void PrintReport(Grade[] gradebook)
+        public static Array[] GetGradesFromUser()
         {
+            Grade[] gradeBook =  new Grade[5]; // Initialize the gradebook array with a size of 5
+             // Create a new Grade object with default values
+            for (int i = 0; i < 4; i++)
+            {
+
+                Console.WriteLine("Enter the name and percentage grade for each student (up to 5 students):");
+
+                Console.Write($"Enter the name of the student for grade number {i + 1}: ");
+                string? name = "";
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    name = Console.ReadLine();
+                }
+                else while (string.IsNullOrWhiteSpace(name))
+                    {
+                        Console.Write("Name cannot be empty. Enter name: ");
+                        name = Console.ReadLine();
+                    }
+
+                Console.Write("Enter percentage grade as a whole number (0-100): ");
+                int percentageGrade = 0;
+                while (!int.TryParse(Console.ReadLine(), out percentageGrade))
+                {
+
+                    Console.WriteLine("Invalid input. Percentage grade must be a whole number between 0 and 100.");
+                    Console.Write("Enter valid percentage grade: ");
+                    // Ensure we read a valid integer input
+                }
+                while (percentageGrade < 0 || percentageGrade > 100)
+                {
+                    Console.WriteLine("Percentage grade must be a whole number between 0 and 100.");
+                    Console.Write("Enter valid percentage grade: ");
+                    percentageGrade = int.Parse(Console.ReadLine()!); // Ensure we read a valid integer input
+                }
+
+
+                Grade gradeBook[i] = new Grade(name, percentageGrade)};
             
+             
         }
+
+        //{
+        //    int i = 0;
+        //    for (i = 0; i < 6; i++)
+        //    {
+        //        Grade grade = new Grade("", 0);
+        //        Grade[] gradeBook = new Grade[i + 1];
+        //        Console.Write($"Name of Student{i + 1}: ");
+        //        string? name[] = Console.ReadLine();
+        //        while (string.IsNullOrWhiteSpace(name))
+        //        {
+        //            Console.Write("Name cannot be empty. Enter name: ");
+        //            name = Console.ReadLine();
+        //        }
+
+        //        Console.WriteLine("Enter percentage grade as a whole number 0-100: ");
+        //        int percentageGrade = 0;
+        //        while (!int.TryParse(Console.ReadLine(), out percentageGrade))
+        //        {
+        //            Console.WriteLine("Invalid. Enter Percentage Grade: ");
+        //        }
+        //        while (percentageGrade < 0 || percentageGrade > 100)
+        //        {
+        //            Console.WriteLine("Percentage Grade must be a whole number between 0 and 100.");
+        //            Console.WriteLine("Enter Percentage Grade: ");
+        //            percentageGrade = int.Parse(Console.ReadLine()!);
+        //        }
+
+
+        //        gradeBook[i] = new Grade(name, percentageGrade);
+
+        //        if (i >= 6)
+        //        {
+        //            Console.WriteLine("Gradebook is full. No more grades can be added.");
+        //            return gradeBook;
+        //        }
+        //        else
+        //        {
+        //            return gradeBook; // Return the filled gradebook array
+        //        }
+
     }
 }
+
+
+      
