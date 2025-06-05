@@ -47,31 +47,36 @@ namespace Week6_GradeTracker
             }
         }
 
-        public static void ChoiceHandler(Grade[]gradebook)
-        { 
-            while (true) 
+        public static void ChoiceHandler(Grade[] gradebook, int Count)
+        {
+            int choice;
+            do
             {
-                
-                int choice = GetUserChoice();
+                DisplayMenu();
+                choice = GetUserChoice();
+
                 switch (choice)
                 {
                     case 1:
-                        if (gradeBook.Length < 5)
-                            for (int i = 0; i < gradeBook.Length; i++)
+                        if (gradebook.Length < 5)
+                        {
+                            for (int i = 0; i < 6; i++)
                             {
                                 Console.WriteLine($"Enter grade {i + 1}:");
-                                gradeBook[i] = GetGradesFromUser(); // Assuming integer input
+                                gradebook[i] = GetGradesFromUser();
                             }
-                        PrintReport();
-                            break;
+                        }
+                        PrintReport(gradebook);
+                        break;
                     case 2:
-                        PrintReport();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please select 1 or 2.");
                         break;
                 }
-
-            } 
-        }
-        
+            }
+            while (choice != 2);  // Exit the loop when the user chooses option 2  
+        }  
 
 
         public static Grade GetGradesFromUser()
@@ -110,24 +115,24 @@ namespace Week6_GradeTracker
             }
         }
 
-        public static void CreateArray(Grade[] gradebook)
-        {
-            
-        }
-        
-        public static void CalculateAverage(Grade[] gradebook)
+              
+        public static void CalculateAverage(Grade[] gradebook, int Count)
         {
             int gradeSum = 0;
-            for (int i = 0; i < 100; i++)
+            int gradeAverage = 0;
+            
+            for (int i = 0; i < 6; i++)
             {
-
+                if (gradebook[i] != null)
+                {
+                    gradeSum += gradebook[i].PercentageGrade;
+                    gradeAverage = (gradeSum / Count);
+                    Console.WriteLine($"The average grade is: {gradeAverage}");
+                }
             }
         }
 
-        public static void GetLetterGrade(int percentageGrade)
-        {
-
-        }
+       
         
         public static void PrintReport(Grade[] gradebook)
         {

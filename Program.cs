@@ -8,13 +8,15 @@ namespace Week6_GradeTracker
         public static void Main()
         {
             Grade[] gradeBook = new Grade[5];
-            int count = 0;
+            int Count = 0;
             
 
             GradeHelpers.DisplayMenu();
+            GradeHelpers.GetUserChoice();
+            GradeHelpers.ChoiceHandler(gradeBook,  Count);
             GradeHelpers.GetGradesFromUser();
-            GradeHelpers.CalculateAverage(gradeBook);
-            GradeHelpers.GetLetterGrade(Grade.percentageGrade);
+            GradeHelpers.CalculateAverage(gradeBook, Count);
+           
             GradeHelpers.PrintReport();
         }
     }

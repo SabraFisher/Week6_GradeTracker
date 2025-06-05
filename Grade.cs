@@ -8,7 +8,34 @@ namespace Week6_GradeTracker
 {
     public record Grade( string? Name, int PercentageGrade)
     {
-        
+        public string? LetterGrade { get; set; }
+        public static string GetLetterGrade(int percentageGrade)
+        {
+            string letterGrade = "";
+            switch (percentageGrade / 10) // Integer division for grouping into 10-point ranges
+            {
+                case 10:
+                case 9:
+                    letterGrade = "A";
+                    return letterGrade;
+                case 8:
+                    letterGrade = "B";
+                    return letterGrade;
+                case 7:
+                    letterGrade = "C";
+                    return letterGrade;
+                case 6:
+                    letterGrade = "D";
+                    return letterGrade;
+                default:
+                    letterGrade = "F";
+                    return letterGrade;
+            }
+        }
+        public override string ToString()
+        {
+            return $"{Name}: {PercentageGrade}% ({GetLetterGrade(PercentageGrade)})";
+        }
     }
 
 }
