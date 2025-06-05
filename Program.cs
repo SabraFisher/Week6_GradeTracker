@@ -9,7 +9,9 @@ namespace Week6_GradeTracker
         {
             Grade[]? gradeBook = null;
             int Count =0;
-            GradeHelpers.ChoiceHandler(gradeBook!, Count);
+            GradeHelpers.DisplayMenu();
+            GradeHelpers.GetUserChoice();
+            GradeHelpers.ChoiceHandler(gradeBook!);
             Grade.CalculateAverage(gradeBook!, Count);
         }
     }

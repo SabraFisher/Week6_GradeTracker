@@ -38,43 +38,48 @@ namespace Week6_GradeTracker
             }
         }
 
-        public static void ChoiceHandler(Grade[] gradebook, int Count)
+        public static void ChoiceHandler(Grade[] gradebook)
         {
-            int choice;
-            do
+            while (true) // Infinite loop to keep displaying the menu until the user chooses to exit 
             {
-                DisplayMenu();
-                GetUserChoice();
-                choice = GetUserChoice();
-                if (choice != 1 && choice != 2)
-                {
-                    Console.WriteLine("Invalid choice. Please select 1 or 2: ");
-                }
-                else
-                {
-                    switch (choice)
-                    {
-                        case 1:
-                            if (gradebook.Length < 5)
-                            {
-                                for (int i = 0; i < 4; i++)
-                                {
-                                    gradebook[5] = GetGradesFromUser();
-                                }
-                            }
-                            PrintReport(gradebook);
-                            break;
-                        case 2:
-                            break;
-                        default:
-                            Console.WriteLine("Invalid choice. Please select 1 or 2.");
-                            break;
-                    }
-                } 
-            }
-            while (choice != 2);  // Exit the loop when the user chooses option 2  
-        }
+                GradeHelpers.DisplayMenu(); // Display the menu each time the loop starts
+                int choice;
 
+                do
+                {
+                     Grade[] gradeBook = // Initialize the gradebook array with a size of 5
+                    choice = GetUserChoice();
+                    Console.WriteLine("You selected: " + choice);
+                    if (choice != 1 && choice != 2)
+                    {
+                        Console.WriteLine("Invalid choice. Please select 1 or 2: ");
+                        continue; // If the choice is not valid, prompt the user again
+                    }
+                    else
+                    {
+                        switch (choice)
+                        {
+                            case 1:
+                                while (gradebook.Length < 5)
+                                {
+                                    for (int i = 0; i < 4; i++)
+                                    {
+                                        gradeBook[i] = GetGradesFromUser();
+
+                                    }
+                                }
+                                break;
+                            case 2:
+                                break;
+                            default:
+                                Console.WriteLine("Invalid choice. Please select 1 or 2.");
+                                break;
+                        }
+                    }
+                }
+                while (choice != 2); // Continue looping until the user chooses to exit
+            }
+        }
         public static void PrintReport(Grade[] gradebook)
         {
             for (int i = 0; i < 5; i++)
