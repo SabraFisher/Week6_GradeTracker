@@ -15,10 +15,11 @@ namespace Week6_GradeTracker
     {
         public static double CalculateAverage (List<double> grades)
         {
-            //if (grades == null || grades.Count == 0)
-            //{
-            //    average = 0; // Return 0 if the list is null or empty
-            //}
+            //  if (grades == null || grades.Count == 0)   *This is the same way to write the code below*
+            //  {
+            //      average = 0; // Return 0 if the list is null or empty
+            //  }
+            
             double total = 0;
             foreach (var grade in grades)
             {
@@ -28,28 +29,48 @@ namespace Week6_GradeTracker
             
         }
 
-        public static string GetLetterGrade(double average)
+        public static string GetLetterGrade(int grade)
         {
-            if (average >= 90)
-            {
-                return "A"; // Return "A" for averages 90 and above
+            
+            switch (grade / 10) // Integer division for grouping into 10-point ranges
+            {   
+                //* Using switch statement to determine the letter grade *
+
+                case 10:
+                case 9:
+                    return "A"; // Return "A" for averages 90 and above
+                case 8:
+                    return "B"; // Return "B" for averages between 80 and 89
+                case 7:
+                    return "C"; // Return "C" for averages between 70 and 79
+                case 6:
+                    return "D"; // Return "D" for averages between 60 and 69
+                default:
+                    return "F"; // Return "F" for averages below 60
             }
-            else if (average >= 80)
-            {
-                return "B"; // Return "B" for averages between 80 and 89
-            }
-            else if (average >= 70)
-            {
-                return "C"; // Return "C" for averages between 70 and 79
-            }
-            else if (average >= 60)
-            {
-                return "D"; // Return "D" for averages between 60 and 69
-            }
-            else
-            {
-                return "F"; // Return "F" for averages below 60
-            }
+
+            //  *Using if statements to determine the letter grade*
+
+            //  if (grade >= 90)  
+            //  {
+            //      return "A"; // Return "A" for averages 90 and above
+            //  }
+            //  else if (grade >= 80)
+            //  {
+            //      return "B"; // Return "B" for averages between 80 and 89
+            //  }
+            //  else if (grade    >= 70)
+            //  {
+            //      return "C"; // Return "C" for averages between 70 and 79
+            //  }
+            //  else if (grade >= 60)
+            //  {
+            //      return "D"; // Return "D" for averages between 60 and 69
+            //  }
+            //  else
+            //  {
+            //      return "F"; // Return "F" for averages below 60
+            //  }
         }
         //public static void DisplayMenu()
         //{
