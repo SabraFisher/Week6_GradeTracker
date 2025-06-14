@@ -13,23 +13,114 @@ namespace Week6_GradeTracker
 {
     public class GradeTracker
     {
-        public static double CalculateAverage (List<double> grades)
+        
+        private const int MaxGrades = 5; // Maximum number of grades allowed
+
+        private Grade[]? grades;  //initialize the grades array to hold up to 5 grades
+        
+        public record Grade(double percentageGrade, string letterGrade)
         {
-            //  if (grades == null || grades.Count == 0)   *This is the same way to write the code below*
-            //  {
-            //      average = 0; // Return 0 if the list is null or empty
-            //  }
-            
-            double total = 0;
-            foreach (var grade in grades)
-            {
-                total += grade;
-            }
-            return grades.Count > 0 ? total / grades.Count : 0; // Calculate and return the average
-            
+            private readonly double PercentageGrade = percentageGrade; // Property to hold the percentage grade
+            public string LetterGrade { get; } = letterGrade; // Property to hold the letter grade
+            public override string ToString() => $"{PercentageGrade} - {LetterGrade}"; // Override ToString method for easy display
+        }
+        
+        private void CreateArray()
+        {
+            grades = new Grade[MaxGrades]; // Initialize the grades array with a size of MaxGrades
         }
 
-        public static string GetLetterGrade(int grade)
+        public static Grade GetGradesFromUser(out Grade[] grades)
+        {
+             
+             
+            Console.WriteLine("Enter 5 numeric grades from 0-100 to be averaged and converted to a letter grade.\n" +
+                              "Press Enter after each grade to continue. Press Enter again to stop.\n");
+            
+            for (int i = 0; i < MaxGrades; i++)
+            {
+                Console.Write($"Enter Grade #{i + 1}: ");
+                
+                while (double.IsNaN(gradeEntered) || gradeEntered < 0 || gradeEntered > 100 )
+                {
+                    Console.Write($"Grade is not valid. Enter a whole number between 1 and 100 for Grade #{i+1}: ");
+                    gradeEntered = Console.ReadLine();
+                }
+                Console.Write("Enter percentage grade as a whole number (0-100): ");
+                double grade;
+                while (!double.TryParse(Console.ReadLine(), out grade) || grade < 0 || grade > 100)
+                {
+                    Console.WriteLine("Invalid input. Grade must be a whole number between 0 and 100.");
+                    Console.Write("Enter valid percentage grade: ");
+                }
+                double gradeEntered = (double)Console.ReadLine(); // Create a new Grade object with the entered values
+
+                Console.WriteLine(); // Fix: Use the object reference to call the instance method ToString()  
+                
+                
+            }
+
+            // Fix: Return the first grade entered or null if no grades were entered  
+            return gradeBook[0] ?? new Grade("", 0);
+        }
+        public static double CalculateAverage(double[] grades)
+        {
+            if (grades == null || grades.Length == 0)
+            {
+                return 0; // Return 0 if the array is null or empty.  
+            }
+            int count = 0; // Initialize count to track the number of valid grades.
+            double total = 0;
+            double average; // Initialize average to 0.
+
+            foreach (var grade in grades)
+            {
+                if (grade >= 0) // Check for valid non-negative grades.  
+                {
+                    total += grade;
+                    count++;
+                }
+            }
+            average = total / count; // Calculate the average.
+            return count > 0 ? average : 0; // Return average or 0 if no valid grades.  
+        }
+
+        //public static void CalculateAverage(Grade[] gradebook, int Count)
+        //{
+        //    int gradeSum = 0;
+        //    int gradeAverage = 0;
+        //    string letterGrade = "";
+        //    for (int i = 0; i < 6; i++)
+        //    {
+        //        if (gradebook[i] != null)
+        //        {
+        //            gradeSum += gradebook[i].PercentageGrade;
+        //            gradeAverage = (gradeSum / Count);
+        //            letterGrade = (GetLetterGrade(gradeAverage));
+        //            Console.WriteLine($"The average grade is: {gradeAverage} , {letterGrade}.");
+        //        }
+        //    }
+        //}
+
+        //double total = 0; // Initialize total to 0
+        //int count = 0; // Initialize count to track the number of grades
+
+        //for (int i = 0; i < grades.Length; i++) // Iterate through the outer array
+        //{
+        //    if (grades[i] != null && grades[i].Length > 0) // Ensure the inner array is not null or empty
+        //    {
+        //        for (int j = 0; j < grades[i].Length; j++) // Iterate through the inner array
+        //        {
+        //            if (grades[i][j] >= 0) // Check if the grade is a valid non-negative number
+        //            {
+        //                total += grades[i][j]; // Sum up the grades in the inner array
+        //                count++; // Increment count for each grade
+        //            }
+        //        }
+        //    }
+        //}
+
+        public static string GetLetterGrade(double grade)
         {
             
             switch (grade / 10) // Integer division for grouping into 10-point ranges
@@ -97,7 +188,7 @@ namespace Week6_GradeTracker
         //    }
         //}
 
-        //public static void ChoiceHandler(Grade[] gradebook)
+        //public static void ChoiceHandler(Grade[] grades)
         //{
         //    while (true) // Infinite loop to keep displaying the menu until the user chooses to exit 
         //    {
@@ -106,7 +197,7 @@ namespace Week6_GradeTracker
 
         //        do
         //        {
-        //             Grade[] gradeBook = // Initialize the gradebook array with a size of 5
+        //             // Initialize the gradebook array with a size of 5
         //            choice = GetUserChoice();
         //            Console.WriteLine("You selected: " + choice);
         //            if (choice != 1 && choice != 2)
@@ -139,51 +230,17 @@ namespace Week6_GradeTracker
         //        while (choice != 2); // Continue looping until the user chooses to exit
         //    }
         //}
-        //public static void PrintReport(Grade[] gradebook)
-        //{
-        //    for (int i = 0; i < 5; i++)
-        //    {
-        //        if (gradebook[i] != null)
-        //        {
-        //            Console.WriteLine(gradebook[i].ToString());
-        //        }
-        //    }
-        //}
-        //public static Grade GetGradesFromUser()
-        //{
-        //    int count = 0; // Initialize count to track the number of grades entered  
-        //    Grade[] gradeBook = new Grade[5]; // Initialize the gradebook array with a size of 5  
-        //    Console.WriteLine("Enter the name and percentage grade for each student (up to 5 students):");
-        //    for (int i = 0; i < 5; i++)
-        //    {
-        //        count++;
-        //        Console.Write($"Enter the name of the student for grade number {i + 1}: ");
-        //        string? name = Console.ReadLine();
-        //        while (string.IsNullOrWhiteSpace(name))
-        //        {
-        //            Console.Write("Name cannot be empty. Enter name: ");
-        //            name = Console.ReadLine();
-        //        }
-        //        Console.Write("Enter percentage grade as a whole number (0-100): ");
-        //        int percentageGrade;
-        //        while (!int.TryParse(Console.ReadLine(), out percentageGrade) || percentageGrade < 0 || percentageGrade > 100)
-        //        {
-        //            Console.WriteLine("Invalid input. Percentage grade must be a whole number between 0 and 100.");
-        //            Console.Write("Enter valid percentage grade: ");
-        //        }
-        //        gradeBook[i] = new Grade(name, percentageGrade);
-        //        Console.WriteLine(gradeBook[i].ToString()); // Fix: Use the object reference to call the instance method ToString()  
-
-        //        if (count >= 5)
-        //        {
-        //            Console.WriteLine("You have reached the maximum number of grades (5).");
-        //            break; // Exit the loop if the maximum number of grades is reached  
-        //        }
-        //    }
-
-        //    // Fix: Return the first grade entered or null if no grades were entered  
-        //    return gradeBook[0] ?? new Grade("", 0);
-        //}
+        public static void PrintReport(Grade[] grades)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (grades[i] != null)
+                {
+                    Console.WriteLine(grades[i].ToString());
+                }
+            }
+        }
+        
     }
 }
 
