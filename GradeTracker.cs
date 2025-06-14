@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Week6_GradeTracker
 {
-    public static class GradeHelpers
+    public static class GradeTracker
     {
         public static void DisplayMenu()
         {
@@ -42,7 +42,7 @@ namespace Week6_GradeTracker
         {
             while (true) // Infinite loop to keep displaying the menu until the user chooses to exit 
             {
-                GradeHelpers.DisplayMenu(); // Display the menu each time the loop starts
+                GradeTracker.DisplayMenu(); // Display the menu each time the loop starts
                 int choice;
 
                 do
