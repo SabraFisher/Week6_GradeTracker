@@ -18,109 +18,52 @@ namespace Week6_GradeTracker
 
         private Grade[]? grades;  //initialize the grades array to hold up to 5 grades
         
-        public record Grade(double percentageGrade, string letterGrade)
-        {
-            private readonly double PercentageGrade = percentageGrade; // Property to hold the percentage grade
-            public string LetterGrade { get; } = letterGrade; // Property to hold the letter grade
-            public override string ToString() => $"{PercentageGrade} - {LetterGrade}"; // Override ToString method for easy display
-        }
+        public record Grade(double grade);
         
+        public void Run()
+        {
+            CreateArray(); // Call the method to create the grades array of 5 grades
+            GetGradesFromUser(); // Call the method to get grades from the user
+            CalculateAverage(); // Call the method to calculate the average of the grades
+            GetLetterGrade(); // Call the method to get the letter grade based on the average
+            PrintReport(); // Call the method to print the report of grades
+        }
+
         private void CreateArray()
         {
             grades = new Grade[MaxGrades]; // Initialize the grades array with a size of MaxGrades
         }
 
-        public static Grade GetGradesFromUser(out Grade[] grades)
+        public void GetGradesFromUser()
         {
-             
-             
-            Console.WriteLine("Enter 5 numeric grades from 0-100 to be averaged and converted to a letter grade.\n" +
-                              "Press Enter after each grade to continue. Press Enter again to stop.\n");
-            
             for (int i = 0; i < MaxGrades; i++)
             {
-                Console.Write($"Enter Grade #{i + 1}: ");
-                
-                while (double.IsNaN(gradeEntered) || gradeEntered < 0 || gradeEntered > 100 )
+                Console.Write($"Enter Grade #{i + 1}: "); //prompt user for grade input
+                double grade = 0; // Initialize grade to 0
+                while (!Double.TryParse(Console.ReadLine(), out grade)) //Validate user input is a number
                 {
-                    Console.Write($"Grade is not valid. Enter a whole number between 1 and 100 for Grade #{i+1}: ");
-                    gradeEntered = Console.ReadLine();
+                    Console.WriteLine($" Grade#{i + 1} must be a number 0-100. Please re-enter: ");
                 }
-                Console.Write("Enter percentage grade as a whole number (0-100): ");
-                double grade;
-                while (!double.TryParse(Console.ReadLine(), out grade) || grade < 0 || grade > 100)
-                {
-                    Console.WriteLine("Invalid input. Grade must be a whole number between 0 and 100.");
-                    Console.Write("Enter valid percentage grade: ");
-                }
-                double gradeEntered = (double)Console.ReadLine(); // Create a new Grade object with the entered values
-
-                Console.WriteLine(); // Fix: Use the object reference to call the instance method ToString()  
-                
-                
+                grades[i] = new Grade(grade); // Store the grade in the grades array at index i 
             }
-
-            // Fix: Return the first grade entered or null if no grades were entered  
-            return gradeBook[0] ?? new Grade("", 0);
         }
-        public static double CalculateAverage(double[] grades)
+        public void CalculateAverage()
         {
-            if (grades == null || grades.Length == 0)
-            {
-                return 0; // Return 0 if the array is null or empty.  
-            }
-            int count = 0; // Initialize count to track the number of valid grades.
             double total = 0;
-            double average; // Initialize average to 0.
 
             foreach (var grade in grades)
             {
-                if (grade >= 0) // Check for valid non-negative grades.  
-                {
-                    total += grade;
-                    count++;
-                }
+                total += grade.grade; // Access the 'grade' property of the 'Grade' object correctly  
             }
-            average = total / count; // Calculate the average.
-            return count > 0 ? average : 0; // Return average or 0 if no valid grades.  
+            double average = total / MaxGrades; // Calculate the average.  
+            Console.Write($"The final grade is: {average}"); // Display the average grade
         }
 
-        //public static void CalculateAverage(Grade[] gradebook, int Count)
-        //{
-        //    int gradeSum = 0;
-        //    int gradeAverage = 0;
-        //    string letterGrade = "";
-        //    for (int i = 0; i < 6; i++)
-        //    {
-        //        if (gradebook[i] != null)
-        //        {
-        //            gradeSum += gradebook[i].PercentageGrade;
-        //            gradeAverage = (gradeSum / Count);
-        //            letterGrade = (GetLetterGrade(gradeAverage));
-        //            Console.WriteLine($"The average grade is: {gradeAverage} , {letterGrade}.");
-        //        }
-        //    }
-        //}
+        
 
-        //double total = 0; // Initialize total to 0
-        //int count = 0; // Initialize count to track the number of grades
+        
 
-        //for (int i = 0; i < grades.Length; i++) // Iterate through the outer array
-        //{
-        //    if (grades[i] != null && grades[i].Length > 0) // Ensure the inner array is not null or empty
-        //    {
-        //        for (int j = 0; j < grades[i].Length; j++) // Iterate through the inner array
-        //        {
-        //            if (grades[i][j] >= 0) // Check if the grade is a valid non-negative number
-        //            {
-        //                total += grades[i][j]; // Sum up the grades in the inner array
-        //                count++; // Increment count for each grade
-        //            }
-        //        }
-        //    }
-        //}
-
-        public static string GetLetterGrade(double grade)
+        public void GetLetterGrade()
         {
             
             switch (grade / 10) // Integer division for grouping into 10-point ranges
@@ -171,73 +114,19 @@ namespace Week6_GradeTracker
         //    Console.WriteLine("\n=================================");
         //    Console.WriteLine();
         //}
-        //public static int GetUserChoice()
-        //{
-        //    Console.Write("Enter your choice: ");
+   
 
-        //    if (int.TryParse(Console.ReadLine(), out int choice))
-        //    {
-        //        Console.WriteLine();
-        //        return choice;
-        //    }
-
-        //    else
-        //    {
-        //        Console.WriteLine("Invalid input. Please Select 1 or 2.");
-        //        return 0; // Return a default value indicating invalid input  
-        //    }
-        //}
-
-        //public static void ChoiceHandler(Grade[] grades)
-        //{
-        //    while (true) // Infinite loop to keep displaying the menu until the user chooses to exit 
-        //    {
-        //        GradeTracker.DisplayMenu(); // Display the menu each time the loop starts
-        //        int choice;
-
-        //        do
-        //        {
-        //             // Initialize the gradebook array with a size of 5
-        //            choice = GetUserChoice();
-        //            Console.WriteLine("You selected: " + choice);
-        //            if (choice != 1 && choice != 2)
-        //            {
-        //                Console.WriteLine("Invalid choice. Please select 1 or 2: ");
-        //                continue; // If the choice is not valid, prompt the user again
-        //            }
-        //            else
-        //            {
-        //                switch (choice)
-        //                {
-        //                    case 1:
-        //                        while (gradebook.Length < 5)
-        //                        {
-        //                            for (int i = 0; i < 4; i++)
-        //                            {
-        //                                gradeBook[i] = GetGradesFromUser();
-
-        //                            }
-        //                        }
-        //                        break;
-        //                    case 2:
-        //                        break;
-        //                    default:
-        //                        Console.WriteLine("Invalid choice. Please select 1 or 2.");
-        //                        break;
-        //                }
-        //            }
-        //        }
-        //        while (choice != 2); // Continue looping until the user chooses to exit
-        //    }
-        //}
-        public static void PrintReport(Grade[] grades)
+        public static void PrintReport()
         {
-            for (int i = 0; i < 5; i++)
+            Console.WriteLine("\n=====   Sabra's Grades Report   =====");
+            Console.WriteLine("All Grades: ");
+
+            foreach (var grade in grades) // Iterate through each grade in the grades array
             {
-                if (grades[i] != null)
+                for (int i = 0; i < MaxGrades; i++)// Loop through the grades array
                 {
-                    Console.WriteLine(grades[i].ToString());
-                }
+                    Console.WriteLine($"Grades: {grade}"); // Print each grade
+                
             }
         }
         
