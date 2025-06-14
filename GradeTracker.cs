@@ -11,21 +11,21 @@ using System.Threading.Tasks;
 
 namespace Week6_GradeTracker
 {
-    public static class GradeTracker
+    public class GradeTracker
     {
         public static double CalculateAverage (List<double> grades)
         {
-            if (grades == null || grades.Count == 0)
-            {
-                return 0.0; // Return 0 if the list is null or empty
-            }
+            //if (grades == null || grades.Count == 0)
+            //{
+            //    average = 0; // Return 0 if the list is null or empty
+            //}
             double total = 0;
             foreach (var grade in grades)
             {
                 total += grade;
             }
-            double average = total / grades.Count; // Calculate and return the average
-            return average;
+            return grades.Count > 0 ? total / grades.Count : 0; // Calculate and return the average
+            
         }
 
         public static string GetLetterGrade(double average)
