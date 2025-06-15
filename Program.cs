@@ -7,10 +7,9 @@ namespace Week6_GradeTracker
     {
         static void Main()
         {
-            GradeTracker gradeTracker = new GradeTracker(); // Create an instance of the GradeTracker 
-            gradeTracker.Run(); // Start the grade tracking process
+            GradeTracker gradeTracker = new GradeTracker(); // Create an instance of the GradeTracker  
 
-
+            gradeTracker.Run(); // Call the Run method to start the grade tracking process        }
         }
     }
 }

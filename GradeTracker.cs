@@ -13,41 +13,100 @@ namespace Week6_GradeTracker
 {
     public class GradeTracker
     {
-        
+
         private const int MaxGrades = 5; // Maximum number of grades allowed
 
         private Grade[]? grades;  //initialize the grades array to hold up to 5 grades
-        
+
         public record Grade(double grade);
-        
+
         public void Run()
         {
-            CreateArray(); // Call the method to create the grades array of 5 grades
-            GetGradesFromUser(); // Call the method to get grades from the user
-            CalculateAverage(); // Call the method to calculate the average of the grades
-            GetLetterGrade(); // Call the method to get the letter grade based on the average
-            PrintReport(); // Call the method to print the report of grades
+            GradeTracker gradeTracker = new GradeTracker(); // Create an instance of the GradeTracker  
+            Console.WriteLine("Welcome to Sabra's Grade Tracker!"); // Display welcome message  
+            Console.WriteLine("You will be prompted to enter 5 grades."); // Prompt user for grades  
+            try {
+                CreateArray(); // Call the method to create the grades array of 5 grades  
+                GetGradesFromUser(grades); // Call the method to get grades from the user  
+                PrintReport(); // Call the method to print the report of grades  
+                GetHighestGrade(); // Call the method to get the highest grade
+                double average = CalculateAverage(); // Store the average grade in a variable for further use  
+                string letterGrade = gradeTracker.GetLetterGrade(average); // Call the method to get the letter grade for display purposes  
+                Console.WriteLine($"\nThe letter grade is: {letterGrade}"); // Display the letter grade  
+            }   
+            catch (Exception ex) // Catch any exceptions that may occur during execution
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}"); // Display the error message
+            }
+            finally
+            {
+                Console.WriteLine("Thank you for using Sabra's Grade Tracker!"); // Display a thank you message
+            }
         }
-
-        private void CreateArray()
+        public void CreateArray()
         {
             grades = new Grade[MaxGrades]; // Initialize the grades array with a size of MaxGrades
         }
 
-        public void GetGradesFromUser()
+        public static void GetGradesFromUser(Grade[] grades)
         {
-            for (int i = 0; i < MaxGrades; i++)
-            {
-                Console.Write($"Enter Grade #{i + 1}: "); //prompt user for grade input
-                double grade = 0; // Initialize grade to 0
-                while (!Double.TryParse(Console.ReadLine(), out grade)) //Validate user input is a number
+            try
+            { 
+                for (int i = 0; i < MaxGrades; i++)
                 {
-                    Console.WriteLine($" Grade#{i + 1} must be a number 0-100. Please re-enter: ");
+                    Console.Write($"Enter Grade #{i + 1}: "); //prompt user for grade input
+                    double grade = 0; // Initialize grade to 0
+                    if ((!Double.TryParse(Console.ReadLine(), out grade))|| grade < 0 || grade > 100) //Validate user input is a number
+                    {
+                        Console.WriteLine($" Grade#{i + 1} must be a number 0-100. Please re-enter: ");
+                    }
+                    else
+                    {
+                        grades[i] = new Grade(grade);  // Check if the grade is within the valid range (0-100)
+                    }  
                 }
-                grades[i] = new Grade(grade); // Store the grade in the grades array at index i 
+            }
+            catch (ArgumentNullException ex) // Catch null reference exceptions that may occur during input
+            {
+                Console.WriteLine($"Input cannot be null: {ex.Message}. Please enter a valid number."); // Display the error message
+            }
+            catch (FormatException ex) // Catch format exceptions that may occur during input
+            {
+                Console.WriteLine($"Invalid input: {ex.Message}. Please enter a valid number."); // Display the error message
+            }
+            catch (Exception ex) // Catch any exceptions that may occur during input
+            {
+                Console.WriteLine($"An error occurred while entering grades: {ex.Message}"); // Display the error message
+            }
+            finally
+            {
+                Console.WriteLine("Grades have been successfully entered."); // Display a success message after entering grades
             }
         }
-        public void CalculateAverage()
+
+
+
+
+
+
+
+
+
+        public void PrintReport()
+        {
+            Console.WriteLine("\n=====   Sabra's Grades Report   =====");
+            Console.Write("\nAll Grades ");
+
+            foreach (var grade in grades) // Iterate through each grade in the grades array
+            {
+                for (int i = 0; i < MaxGrades; i++)// Loop through the grades array
+                {
+                    Console.Write($"-{i + 1}: {grade}% "); // Print each grade
+                }
+            }
+
+        }
+        public double CalculateAverage()
         {
             double total = 0;
 
@@ -56,80 +115,41 @@ namespace Week6_GradeTracker
                 total += grade.grade; // Access the 'grade' property of the 'Grade' object correctly  
             }
             double average = total / MaxGrades; // Calculate the average.  
-            Console.Write($"The final grade is: {average}"); // Display the average grade
+            Console.WriteLine($"\nThe final grade is: {average}"); // Display the average grade  
+            return average; // Return the calculated average  
         }
 
-        
-
-        
-
-        public void GetLetterGrade()
+        public string GetLetterGrade(double average)
         {
-            
-            switch (grade / 10) // Integer division for grouping into 10-point ranges
-            {   
+            string letterGrade; // Declare a variable to hold the letter grade
+            switch (average / 10) // Integer division for grouping into 10-point ranges
+            {
                 //* Using switch statement to determine the letter grade *
 
                 case 10:
                 case 9:
-                    return "A"; // Return "A" for averages 90 and above
+                    letterGrade = "A"; // Return "A" for averages 90 and above
+                    break;
                 case 8:
-                    return "B"; // Return "B" for averages between 80 and 89
+                    letterGrade = "B"; // Return "B" for averages between 80 and 89
+                    break;
                 case 7:
-                    return "C"; // Return "C" for averages between 70 and 79
+                    letterGrade = "C"; // Return "C" for averages between 70 and 79
+                    break;
                 case 6:
-                    return "D"; // Return "D" for averages between 60 and 69
+                    letterGrade = "D"; // Return "D" for averages between 60 and 69
+                    break;
                 default:
-                    return "F"; // Return "F" for averages below 60
-            }
-
-            //  *Using if statements to determine the letter grade*
-
-            //  if (grade >= 90)  
-            //  {
-            //      return "A"; // Return "A" for averages 90 and above
-            //  }
-            //  else if (grade >= 80)
-            //  {
-            //      return "B"; // Return "B" for averages between 80 and 89
-            //  }
-            //  else if (grade    >= 70)
-            //  {
-            //      return "C"; // Return "C" for averages between 70 and 79
-            //  }
-            //  else if (grade >= 60)
-            //  {
-            //      return "D"; // Return "D" for averages between 60 and 69
-            //  }
-            //  else
-            //  {
-            //      return "F"; // Return "F" for averages below 60
-            //  }
+                    letterGrade = "F"; // Return "F" for averages below 60
+                    break;
+            } return letterGrade; // Return the letter grade based on the average
         }
-        //public static void DisplayMenu()
-        //{
-        //    Console.WriteLine("\n======= Sabra's Gradebook =======");
-        //    Console.WriteLine("\n     1. Enter new grade.");
-        //    Console.WriteLine("     2. Exit Application.");
-        //    Console.WriteLine("\n=================================");
-        //    Console.WriteLine();
-        //}
-   
-
-        public static void PrintReport()
+        private void GetHighestGrade()
         {
-            Console.WriteLine("\n=====   Sabra's Grades Report   =====");
-            Console.WriteLine("All Grades: ");
+            var highestGrade = grades.OrderByDescending(g => g.grade).First();
 
-            foreach (var grade in grades) // Iterate through each grade in the grades array
-            {
-                for (int i = 0; i < MaxGrades; i++)// Loop through the grades array
-                {
-                    Console.WriteLine($"Grades: {grade}"); // Print each grade
-                
-            }
+            Console.WriteLine($"The highest grade was {highestGrade}%");
         }
-        
     }
 }
 
